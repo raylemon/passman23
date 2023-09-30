@@ -62,7 +62,7 @@ def login():
         global active_vault
         active_vault = users[user_name]
         notice(f"Logged in as {user_name}")
-        vault_menu()
+        vault_menu(user_name)
 
 
 def remove():
@@ -73,7 +73,63 @@ def remove():
         del users[user_name]
         notice(f"User {user_name} removed")
 
-def vault_menu():
+
+def vault_menu(user: str):
+    print(f"{user}'s Vault".center(80, "-"))
+    while (choice := -1) != 0:
+        print(
+            """
+        \r1. List Items
+        \r2. Show item’s details
+        \r3. Add item
+        \r4. Edit item
+        \r5. Delete item
+        \r6. Search by name
+        
+        \r0. Back"""
+        )
+
+        choice = ask_for_number()
+        match choice:
+            case 1:
+                list_items()
+            case 2:
+                show_item()
+            case 3:
+                add_item()
+            case 4:
+                edit_item()
+            case 5:
+                delete_item()
+            case 6:
+                search_item()
+            case 0:
+                break
+            case _:
+                warning("Invalid choice")
+
+
+def list_items():
+    pass
+
+
+def show_item():
+    pass
+
+
+def add_item():
+    pass
+
+
+def edit_item():
+    pass
+
+
+def delete_item():
+    pass
+
+
+def search_item():
     pass
 
 
