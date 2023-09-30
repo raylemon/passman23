@@ -1,11 +1,16 @@
-from colorama import Fore, Style,init
+import os
+import pickle
+
+from colorama import Fore, Style, init
+
+
 def main():
     """
     The main function is the entry point of the program.
     It displays a menu to the user and executes the corresponding actions based on the user's choice.
 
     Parameters:
-        None
+
 
     Returns:
         None
@@ -32,6 +37,7 @@ def main():
             case 3:
                 remove()
             case 0:
+                save()
                 exit()
             case _:
                 warning("Invalid choice")
@@ -141,7 +147,7 @@ def remove():
     Removes a user from the list of registered users.
 
     Parameters:
-        None
+
 
     Returns:
         None
@@ -217,7 +223,7 @@ def show_item():
     Show an item from the active vault based on the user's input.
 
     Parameters:
-        None
+
 
     Returns:
         None
@@ -234,7 +240,7 @@ def add_item():
     Adds an item to the active vault.
 
     Parameters:
-        None
+
 
     Returns:
         None
@@ -265,9 +271,7 @@ def edit_item():
     """
     name = input("Enter item name: ")
     if name in active_vault:
-        new_name = (
-            input("Enter item new name or leave blank to keep old name: ") or name
-        )
+        (input("Enter item new name or leave blank to keep old name: ") or name)
         new_value = (
             input("Enter item value or leave blank to keep old value: ")
             or active_vault[name]
@@ -285,18 +289,20 @@ def delete_item():
     Deletes an item from the active vault.
 
     Parameters:
-        None
+
 
     Returns:
         None
 
     Description:
-        This function prompts the user to enter the name of an item to delete from the active vault. If the item is found in the active vault, it is deleted and a notice is displayed. Otherwise, a warning is displayed indicating that the item was not found.
+        This function prompts the user to enter the name of an item to delete from the active vault. If the item is
+        found in the active vault, it is deleted and a notice is displayed. Otherwise, a warning is displayed indicating
+        that the item was not found.
     """
     name = input("Enter item")
     if name in active_vault:
         del active_vault[name]
-        notice(f"Item removed")
+        notice("Item removed")
     else:
         warning("Item not found")
 
@@ -317,8 +323,39 @@ def search_item():
             print(f"{name}: {value}")
 
 
+def load():
+    """
+    Load data from a file if it exists, otherwise return an empty dictionary.
+
+    Returns:
+        dict: The loaded data if the file exists, otherwise an empty dictionary.
+    """
+    if os.path.exists("data.dat"):
+        with open("data.dat", "rb") as file:
+            return pickle.load(file)
+    else:
+        return {}
+
+
+def save():
+    """
+    Save the data to a file.
+
+    This function saves the data to a binary file named 'data.dat'. It uses the 'pickle' module to serialize the 'users'
+    data and write it to the file.
+
+    Parameters:
+
+
+    Returns:
+        None
+    """
+    with open("data.dat", "wb") as file:
+        pickle.dump(users, file)
+
+
 if __name__ == "__main__":
     init(autoreset=True)
-    users: dict[str, dict:[str, str]] = {}
+    users: dict[str, dict:[str, str]] = load()
     active_vault: dict[str, str] = {}
     main()
