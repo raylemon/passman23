@@ -110,15 +110,26 @@ def vault_menu(user: str):
 
 
 def list_items():
-    pass
+    for name, value in active_vault.items():
+        print(f"{name}: {value}")
 
 
 def show_item():
-    pass
+    name = input("Enter item name: ")
+    if name in active_vault:
+        print(f"Item: {name}: {active_vault[name]}")
+    else:
+        warning("Item not found")
 
 
 def add_item():
-    pass
+    name = input("Enter item name: ")
+    if name not in active_vault:
+        value = input("Enter item value: ")
+        active_vault[name] = value
+        print(f"{name}: {value} added to vault")
+    else:
+        warning("Item already exists")
 
 
 def edit_item():
@@ -135,4 +146,5 @@ def search_item():
 
 if __name__ == "__main__":
     users: dict[str, dict:[str, str]] = {}
+    active_vault: dict[str, str] = {}
     main()
