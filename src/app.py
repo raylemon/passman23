@@ -1,3 +1,4 @@
+from colorama import Fore, Style,init
 def main():
     """
     The main function is the entry point of the program.
@@ -10,7 +11,7 @@ def main():
         None
     """
 
-    print("Passman - Password Manager".center(80, "-"))
+    print(Style.BRIGHT + "Passman - Password Manager".center(80, "-"))
     while (choice := -1) != 0:
         print(
             """
@@ -61,7 +62,7 @@ def error(msg: str):
     Returns:
         None
     """
-    print(f"Error: {msg}")
+    print(Fore.RED + Style.BRIGHT + f"Error: {msg}")
 
 
 def notice(msg: str):
@@ -74,7 +75,7 @@ def notice(msg: str):
     Returns:
         None
     """
-    print(f"Notice: {msg}")
+    print(Fore.BLUE + Style.BRIGHT + f"Notice: {msg}")
 
 
 def warning(msg: str):
@@ -87,7 +88,7 @@ def warning(msg: str):
     Returns:
         None
     """
-    print(f"Warning: {msg}")
+    print(Fore.YELLOW + Style.BRIGHT + f"Warning: {msg}")
 
 
 def register():
@@ -163,7 +164,7 @@ def vault_menu(user: str):
     Returns:
         None
     """
-    print(f"{user}'s Vault".center(80, "-"))
+    print(Style.BRIGHT + f"{user}'s Vault".center(80, "-"))
     while (choice := -1) != 0:
         print(
             """
@@ -317,6 +318,7 @@ def search_item():
 
 
 if __name__ == "__main__":
+    init(autoreset=True)
     users: dict[str, dict:[str, str]] = {}
     active_vault: dict[str, str] = {}
     main()
