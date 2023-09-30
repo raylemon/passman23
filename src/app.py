@@ -133,15 +133,37 @@ def add_item():
 
 
 def edit_item():
-    pass
+    name = input("Enter item name: ")
+    if name in active_vault:
+        new_name = (
+            input("Enter item new name or leave blank to keep old name: ") or name
+        )
+        new_value = (
+            input("Enter item value or leave blank to keep old value: ")
+            or active_vault[name]
+        )
+
+        del active_vault[name]
+        active_vault[name] = new_value
+        notice(f"Item {name} updated")
+    else:
+        warning("Item not found")
 
 
 def delete_item():
-    pass
+    name = input("Enter item")
+    if name in active_vault:
+        del active_vault[name]
+        notice(f"Item removed")
+    else:
+        warning("Item not found")
 
 
 def search_item():
-    pass
+    query = input("Enter search query: ")
+    for name, value in active_vault.items():
+        if query in name or query in value:
+            print(f"{name}: {value}")
 
 
 if __name__ == "__main__":
