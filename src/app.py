@@ -8,7 +8,7 @@ def main():
         
         \r0. Exit""")
 
-        choice = int(input("Enter your choice: "))
+        choice = ask_for_number()
 
         match choice:
             case 1:
@@ -19,6 +19,28 @@ def main():
                 remove()
             case 0:
                 exit()
+            case _:
+                warning("Invalid choice")
+
+
+def ask_for_number() -> int:
+    ch = input("Enter your choice: ")
+    if ch.isdigit():
+        return int(ch)
+    else:
+        return -1
+
+
+def error(msg: str):
+    print(f"Error: {msg}")
+
+
+def notice(msg: str):
+    print(f"Notice: {msg}")
+
+
+def warning(msg: str):
+    print(f"Warning: {msg}")
 
 
 def register():
@@ -35,3 +57,4 @@ def remove():
 
 if __name__ == '__main__':
     users: dict[str, dict:[str, str]] = {}
+    main()
