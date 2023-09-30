@@ -59,6 +59,20 @@ class User:
         """
         return hash(self.name)
 
+    def __eq__(self, other: object) -> bool:
+        """
+        Compare two User objects for equality based on their names.
+
+        Args:
+            other (User): The object to compare.
+
+        Returns:
+             bool: True if the objects are equal, False otherwise.
+        """
+        if isinstance(other, User):
+            return self.name == other.name
+        return False
+
 
 class Item:
     """
@@ -100,6 +114,20 @@ class Item:
         Calculate the hash value of the current object.
         """
         return hash(self.name)
+
+    def __eq__(self, other: object) -> bool:
+        """
+        Compare two Item objects for equality based on their names.
+
+        Args:
+            other (Item): The object to compare.
+
+        Returns:
+             bool: True if the objects are equal, False otherwise.
+        """
+        if isinstance(other, Item):
+            return self.name == other.name
+        return False
 
 
 class Vault:
