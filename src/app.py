@@ -10,7 +10,7 @@ def main():
     It displays a menu to the user and executes the corresponding actions based on the user's choice.
 
     Parameters:
-        None
+
 
     Returns:
         None
@@ -147,7 +147,7 @@ def remove():
     Removes a user from the list of registered users.
 
     Parameters:
-        None
+
 
     Returns:
         None
@@ -223,7 +223,7 @@ def show_item():
     Show an item from the active vault based on the user's input.
 
     Parameters:
-        None
+
 
     Returns:
         None
@@ -240,7 +240,7 @@ def add_item():
     Adds an item to the active vault.
 
     Parameters:
-        None
+
 
     Returns:
         None
@@ -271,9 +271,7 @@ def edit_item():
     """
     name = input("Enter item name: ")
     if name in active_vault:
-        new_name = (
-            input("Enter item new name or leave blank to keep old name: ") or name
-        )
+        (input("Enter item new name or leave blank to keep old name: ") or name)
         new_value = (
             input("Enter item value or leave blank to keep old value: ")
             or active_vault[name]
@@ -291,18 +289,20 @@ def delete_item():
     Deletes an item from the active vault.
 
     Parameters:
-        None
+
 
     Returns:
         None
 
     Description:
-        This function prompts the user to enter the name of an item to delete from the active vault. If the item is found in the active vault, it is deleted and a notice is displayed. Otherwise, a warning is displayed indicating that the item was not found.
+        This function prompts the user to enter the name of an item to delete from the active vault. If the item is
+        found in the active vault, it is deleted and a notice is displayed. Otherwise, a warning is displayed indicating
+        that the item was not found.
     """
     name = input("Enter item")
     if name in active_vault:
         del active_vault[name]
-        notice(f"Item removed")
+        notice("Item removed")
     else:
         warning("Item not found")
 
@@ -341,10 +341,11 @@ def save():
     """
     Save the data to a file.
 
-    This function saves the data to a binary file named 'data.dat'. It uses the 'pickle' module to serialize the 'users' data and write it to the file.
+    This function saves the data to a binary file named 'data.dat'. It uses the 'pickle' module to serialize the 'users'
+    data and write it to the file.
 
     Parameters:
-        None
+
 
     Returns:
         None
