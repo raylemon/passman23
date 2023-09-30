@@ -1,12 +1,14 @@
 def main():
     print("Passman - Password Manager".center(80, "-"))
-    while choice := -1 != 0:
-        print("""
+    while (choice := -1) != 0:
+        print(
+            """
         \r1. Register
         \r2. Login
         \r3. Remove User
         
-        \r0. Exit""")
+        \r0. Exit"""
+        )
 
         choice = ask_for_number()
 
@@ -44,17 +46,37 @@ def warning(msg: str):
 
 
 def register():
-    pass
+    user_name = input("Enter your username: ")
+    if user_name not in users:
+        users[user_name] = {}
+        notice(f"Registered user: {user_name}")
+    else:
+        warning(f"User {user_name} already exists")
 
 
 def login():
-    pass
+    user_name = input("Enter your username: ")
+    if user_name not in users:
+        error("Invalid username. Please register first.")
+    else:
+        global active_vault
+        active_vault = users[user_name]
+        notice(f"Logged in as {user_name}")
+        vault_menu()
 
 
 def remove():
+    user_name = input("Enter your username: ")
+    if user_name not in users:
+        error("Invalid username. Please register first.")
+    else:
+        del users[user_name]
+        notice(f"User {user_name} removed")
+
+def vault_menu():
     pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     users: dict[str, dict:[str, str]] = {}
     main()
