@@ -292,7 +292,7 @@ class App:
                 case 5:
                     self.delete_item()
                 case 6:
-                    self.search_item()
+                    self.search_item_by_name()
                 case 0:
                     break
                 case _:
@@ -391,7 +391,7 @@ class App:
         else:
             self.active_vault.remove_item(item)
 
-    def search_by_name(self):
+    def search_item_by_name(self):
         """
         Perform a search by name in the vault.
 
