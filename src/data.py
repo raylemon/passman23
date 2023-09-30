@@ -199,35 +199,23 @@ class Vault:
                 return item
         return None
 
-    def edit_item(
-        self,
-        item: Item,
-        new_name: str,
-        new_website: str,
-        new_login: str,
-        new_password: str,
-    ):
+    def edit_item(self, item: Item, new_item: Item):
         """
         Edits an item in the vault with new attributes.
 
         Args:
             item (Item): The item to be edited.
-            new_name (str): The new name of the item.
-            new_website (str): The new website associated with the item.
-            new_login (str): The new login credentials for the item.
-            new_password (str): The new password associated with the item.
+            new_item (Item): The new item attributes.
 
-        Raises:
-            ValueError: If the item is not found in the vault.
+        Returns:
+            None
         """
         if item not in self.items:
             print("Item not found")  # TODO later
             return
         else:
-            item.name = new_name
-            item.website = new_website
-            item.login = new_login
-            item.password = new_password
+            self.items.remove(item)
+            self.items.append(new_item)
 
     def search_by_name(self, query: str) -> list[Item]:
         return [item for item in self.items if query in item.name]

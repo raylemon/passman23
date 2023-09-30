@@ -3,188 +3,15 @@ import pickle
 
 from colorama import Fore, Style, init
 
-from src.data import User, Vault
-
-
-#
-#
-
-#
-#
-# def vault_menu(user: str, active_vault: dict[str, str]):
-#     """
-#     Prints the menu for the user's vault and allows them to select various actions.
-#
-#     Args:
-#         user (str): The name of the user.
-#         active_vault (dict[str, str]): The dictionary containing the items to search through.
-#
-#
-#     Returns:
-#         None
-#     """
-#     print(Style.BRIGHT + f"{user}'s Vault".center(80, "-"))
-#     while (choice := -1) != 0:
-#         print(
-#             """
-#         \r1. List Items
-#         \r2. Show item’s details
-#         \r3. Add item
-#         \r4. Edit item
-#         \r5. Delete item
-#         \r6. Search by name
-#
-#         \r0. Back"""
-#         )
-#
-#         choice = ask_for_number()
-#         match choice:
-#             case 1:
-#                 list_items(active_vault)
-#             case 2:
-#                 show_item(active_vault)
-#             case 3:
-#                 add_item(active_vault)
-#             case 4:
-#                 edit_item(active_vault)
-#             case 5:
-#                 delete_item(active_vault)
-#             case 6:
-#                 search_item(active_vault)
-#             case 0:
-#                 break
-#             case _:
-#                 warning("Invalid choice")
-#
-#
-# def list_items(active_vault: dict[str, str]):
-#     """
-#     Print the name and value of each item in the active_vault dictionary.
-#
-#     Parameters:
-#     active_vault (dict[str, str]): The dictionary containing the items to search through.
-#
-#
-#     Returns:
-#     None
-#     """
-#     [print(f"{name}: {value}") for name, value in active_vault.items()]
-#
-#
-# def show_item(active_vault: dict[str, str]):
-#     """
-#     Show an item from the active vault based on the user's input.
-#
-#     Parameters:
-#     active_vault (dict[str, str]): The dictionary containing the items to search through.
-#
-#
-#     Returns:
-#         None
-#     """
-#     name = input("Enter item name: ")
-#     if name in active_vault:
-#         print(f"Item: {name}: {active_vault[name]}")
-#     else:
-#         warning("Item not found")
-#
-#
-# def add_item(active_vault: dict[str, str]):
-#     """
-#     Adds an item to the active vault.
-#
-#     Parameters:
-#     active_vault (dict[str, str]): The dictionary containing the items to search through.
-#
-#
-#     Returns:
-#         None
-#     """
-#     name = input("Enter item name: ")
-#     if name not in active_vault:
-#         value = input("Enter item value: ")
-#         active_vault[name] = value
-#         print(f"{name}: {value} added to vault")
-#     else:
-#         warning("Item already exists")
-#
-#
-# def edit_item(active_vault: dict[str, str]):
-#     """
-#     Edit an item in the active vault.
-#
-#     Prompts the user to enter the name of the item to be edited. If the item
-#     is found in the active vault, the user is prompted to enter a new name
-#     and value for the item. If the user leaves either field blank, the old
-#     name or value is kept. The item is then updated in the active vault.
-#
-#     Parameters:
-#     active_vault (dict[str, str]): The dictionary containing the items to search through.
-#
-#     Returns:
-#     None
-#     """
-#     name = input("Enter item name: ")
-#     if name in active_vault:
-#         new_name = input("Enter item new name or leave blank to keep old name: ")
-#         new_value = input("Enter item value or leave blank to keep old value: ")
-#
-#         active_vault[name] = new_value if new_value else active_vault[name]
-#         active_vault[new_name] = active_vault.pop(name)
-#
-#         notice(f"Item {name} updated")
-#     else:
-#         warning("Item not found")
-#
-#
-# def delete_item(active_vault: dict[str, str]):
-#     """
-#     Deletes an item from the active vault.
-#
-#     Parameters:
-#     active_vault (dict[str, str]): The dictionary containing the items to search through.
-#
-#
-#     Returns:
-#         None
-#
-#     Description:
-#         This function prompts the user to enter the name of an item to delete from the active vault. If the item is
-#         found in the active vault, it is deleted and a notice is displayed. Otherwise, a warning is displayed indicating
-#         that the item was not found.
-#     """
-#     name = input("Enter item")
-#     if name in active_vault:
-#         del active_vault[name]
-#         notice("Item removed")
-#     else:
-#         warning("Item not found")
-#
-#
-# def search_item(active_vault: dict[str, str]):
-#     """
-#     Perform a search for an item in the active_vault based on a user-provided query.
-#
-#     Parameters:
-#     active_vault (dict[str, str]): The dictionary containing the items to search through.
-#
-#     Returns:
-#     None
-#     """
-#     query = input("Enter search query: ")
-#     results = [
-#         f"{name}: {value}"
-#         for name, value in active_vault.items()
-#         if query in name or query in value
-#     ]
-#     print("\n".join(results))
-#
+from src.data import Item, User, Vault
 
 
 class App:
     """
     The main application class.
     """
+
+    active_vault: Vault
 
     def __init__(self):
         init(autoreset=True)
@@ -424,8 +251,157 @@ class App:
         else:
             user.password = input("Enter your new password: ")
             self.notice(f"Password changed")
+
     def vault_menu(self, user: User):
-        pass
+        """
+        Prints the menu for the user's vault and allows them to select various actions.
+
+        Args:
+            user (User): The user object.
+
+        Returns:
+            None
+        """
+        print(Style.BRIGHT + f"{user}'s Vault".center(80, "-"))
+
+        self.active_vault = self.users[user]
+
+        while (choice := -1) != 0:
+            print(
+                """
+            \r1. List Items
+            \r2. Show item’s details
+            \r3. Add item
+            \r4. Edit item
+            \r5. Delete item
+            \r6. Search by name
+
+            \r0. Back"""
+            )
+
+            choice = self.ask_for_number()
+            match choice:
+                case 1:
+                    self.list_items()
+                case 2:
+                    self.show_item()
+                case 3:
+                    self.add_item()
+                case 4:
+                    self.edit_item()
+                case 5:
+                    self.delete_item()
+                case 6:
+                    self.search_item()
+                case 0:
+                    break
+                case _:
+                    self.warning("Invalid choice")
+
+    def list_items(self):
+        """
+        Print the name and value of each item in the vault.
+
+        Returns:
+            None
+        """
+        [print(f"{item.name}") for item in self.active_vault.get_items()]
+
+    def show_item(self):
+        """
+        Print the name, website, username, and password of the item.
+        Returns:
+            None
+        """
+        item_name = input("Enter the name of the item: ")
+        item = self.active_vault.get_item_by_name(item_name)
+
+        if item is None:
+            self.error("Item not found")
+        else:
+            print(f"Name: {item.name}")
+            print(f"Website: {item.website}")
+            print(f"Username: {item.login}")
+            print(f"Password: {item.password}")
+
+    def add_item(self):
+        """
+        Adds an item to the vault.
+
+        Returns:
+            None
+        """
+        item_name = input("Enter the name of the item: ")
+        item = self.active_vault.get_item_by_name(item_name)
+
+        if item is not None:
+            self.warning(f"{item} already exists")
+            return
+        else:
+            website = input("Enter the website of the item: ")
+            login = input("Enter the login of the item: ")
+            password = input("Enter the password of the item: ")
+
+            item = Item(item_name, website, login, password)
+            self.active_vault.add_item(item)
+
+    def edit_item(self):
+        """
+        Edit an existing item in the vault.
+
+        Prompts the user to enter the name, website, username, and password of the item to be edited.
+        If the item is not found, a warning is displayed. If the user leaves any of the fields blank,
+        the old value is kept. The item is then updated with the new values.
+
+        Returns:
+            None
+        """
+        item_name = input("Enter the name of the item: ")
+        item = self.active_vault.get_item_by_name(item_name)
+        if item is None:
+            self.error("Item not found")
+            return
+
+        new_name = input("Enter the new name of the item: ")
+        website = input("Enter the website of the item: ")
+        login = input("Enter the login of the item: ")
+        password = input("Enter the password of the item: ")
+
+        new_item = Item(
+            new_name or item.name,
+            website or item.website,
+            login or item.login,
+            password or item.password,
+        )
+        self.active_vault.edit_item(item, new_item)
+        self.notice(f"Item {item_name} updated")
+
+        def delete_item(self):
+            """
+            Deletes an item from the vault.
+
+            Returns:
+                None
+            """
+            item_name = input("Enter the name of the item: ")
+            item = self.active_vault.get_item_by_name(item_name)
+            if item is None:
+                self.error("Item not found")
+                return
+            else:
+                self.active_vault.remove_item(item)
+
+    def search_by_name(self):
+        """
+        Perform a search by name in the vault.
+
+        Returns:
+            None
+        """
+        query = input("Enter search query: ")
+        results = self.active_vault.search_by_name(query)
+
+        print("\n".join(str(results)))
 
 
 if __name__ == "__main__":
