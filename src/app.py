@@ -376,20 +376,20 @@ class App:
         self.active_vault.edit_item(item, new_item)
         self.notice(f"Item {item_name} updated")
 
-        def delete_item(self):
-            """
-            Deletes an item from the vault.
+    def delete_item(self):
+        """
+        Deletes an item from the vault.
 
-            Returns:
-                None
-            """
-            item_name = input("Enter the name of the item: ")
-            item = self.active_vault.get_item_by_name(item_name)
-            if item is None:
-                self.error("Item not found")
-                return
-            else:
-                self.active_vault.remove_item(item)
+        Returns:
+            None
+        """
+        item_name = input("Enter the name of the item: ")
+        item = self.active_vault.get_item_by_name(item_name)
+        if item is None:
+            self.error("Item not found")
+            return
+        else:
+            self.active_vault.remove_item(item)
 
     def search_by_name(self):
         """
