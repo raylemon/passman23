@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import Optional
 
 
@@ -41,7 +42,7 @@ class User:
         """
         return self.password == password
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         """
         Returns a string representation of the User object.
 
@@ -74,6 +75,7 @@ class User:
         return False
 
 
+@dataclass
 class Item:
     """
     Represents an item stored in the vault.
@@ -88,46 +90,10 @@ class Item:
         item = Item("Email", "example.com", "john_doe", "password123")
     """
 
-    def __init__(self, name: str, website: str, login: str, password: str):
-        """
-        Initializes an Item object with the given attributes.
-
-        Args:
-            name (str): The name of the item.
-            website (str): The website associated with the item.
-            login (str): The login credentials for the item.
-            password (str): The password associated with the item.
-        """
-        self.name = name
-        self.website = website
-        self.login = login
-        self.password = password
-
-    def __str__(self) -> str:
-        """
-        Returns a string representation of the Item object.
-        """
-        return f"Item: {self.name}: {self.website}"
-
-    def __hash__(self) -> int:
-        """
-        Calculate the hash value of the current object.
-        """
-        return hash(self.name)
-
-    def __eq__(self, other: object) -> bool:
-        """
-        Compare two Item objects for equality based on their names.
-
-        Args:
-            other (Item): The object to compare.
-
-        Returns:
-             bool: True if the objects are equal, False otherwise.
-        """
-        if isinstance(other, Item):
-            return self.name == other.name
-        return False
+    name: str
+    website: str
+    login: str
+    password: str
 
 
 class Vault:
@@ -147,7 +113,7 @@ class Vault:
         """
         Initializes an empty Vault object.
         """
-        self.items = []
+        self.items: list[Item] = []
 
     def add_item(self, item: Item):
         """
@@ -217,5 +183,7 @@ class Vault:
             self.items.remove(item)
             self.items.append(new_item)
 
-    def search_by_name(self, query: str) -> list[Item]:
-        return [item for item in self.items if query in item.name]
+    def search(self, query: str) -> list[Item]:
+        return [
+            item for item in self.items if query in item.name or query in item.website
+        ]

@@ -15,7 +15,7 @@ license = {text = "MIT"}
 [tool.pdm.dev-dependencies]
 tools = [
     "black>=23.9.1",
-    "ruff>=0.0.291",
+    "ruff>=0.0.292",
 ]
 
 [tool.ruff]

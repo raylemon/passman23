@@ -1,5 +1,5 @@
-import os
 import pickle
+from pathlib import Path
 
 from colorama import Fore, Style, init
 
@@ -14,21 +14,19 @@ class App:
     active_vault: Vault
 
     def __init__(self):
-        init(autoreset=True)
+        self.path: Path = Path("data.dat")
         self.users: dict[User, Vault] = self.load()
         self.main()
 
-    @staticmethod
-    def load() -> dict[User, Vault]:
+    def load(self) -> dict[User, Vault]:
         """
         Loads data from a file if it exists, otherwise return an empty dictionary.
 
         Returns:
             dict: The loaded data if the file exists, otherwise an empty dictionary.
         """
-        # TODO later
-        if os.path.exists("data.dat"):
-            with open("data.dat", "rb") as file:
+        if self.path.exists():
+            with self.path.open("rb") as file:
                 return pickle.load(file)
         else:
             return {}
@@ -43,7 +41,7 @@ class App:
         Returns:
              None
         """
-        with open("data.dat", "wb") as file:
+        with self.path.open("wb") as file:
             pickle.dump(self.users, file)
 
     def main(self):
@@ -51,6 +49,7 @@ class App:
         The main function is the entry point of the program.
         It displays a menu to the user and executes the corresponding actions based on the user's choice.
         """
+        init(autoreset=True)
         print(Style.BRIGHT + "Passman - Password Manager".center(80, "-"))
         while (choice := -1) != 0:
             print(
@@ -319,10 +318,7 @@ class App:
         if item is None:
             self.error("Item not found")
         else:
-            print(f"Name: {item.name}")
-            print(f"Website: {item.website}")
-            print(f"Username: {item.login}")
-            print(f"Password: {item.password}")
+            print(item)
 
     def add_item(self):
         """
@@ -399,7 +395,7 @@ class App:
             None
         """
         query = input("Enter search query: ")
-        results = self.active_vault.search_by_name(query)
+        results = self.active_vault.search(query)
 
         print("\n".join(str(results)))
 
